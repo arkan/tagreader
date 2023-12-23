@@ -1,39 +1,20 @@
-# Insert your SSID and Your PWD after inital setup
-wifi:
-# networks:
-#    - ssid: 'REPLACEME'          # Enter your WiFi SSID here. Example: `ssid: 'your_network_name'`
-#      password: 'REPLACEME'      # Enter your wifi password here. Example: `password: 'abcde123456'`
-  ap:
-    ssid: ${name}
-
-# Enable the captive portal for inital WiFi setup
-captive_portal:
-
-dashboard_import:
-  package_import_url: github://adonno/tagreader/tagreader.yaml
-
-improv_serial:
-
-
 substitutions:
-  name: tagreader
-  friendly_name: TagReader
+  name: nfckizi1
+  friendly_name: NFC KiZi1
 
 esphome:
   name: $name
-  platform: ESP8266
-  board: d1_mini
-
+  friendly_name: $friendly_name
   # Automatically add the mac address to the name
   # so you can use a single firmware for all devices
-  name_add_mac_suffix: true
+  #name_add_mac_suffix: true
 
   # This will allow for (future) project identification,
   # configuration and updates.
   project:
     name: adonno.tag_reader
     version: "1.4"
-# If buzzer is enabled, notify on api connection success
+    # If buzzer is enabled, notify on api connection success
   on_boot:
     priority: -10
     then:
@@ -51,7 +32,30 @@ esphome:
     - switch.turn_on: buzzer_enabled
     - switch.turn_on: led_enabled
 
-# Define switches to control LED and buzzer from HA
+esp32:
+  board: esp32dev
+  framework:
+    type: arduino
+
+dashboard_import:
+  package_import_url: github://adonno/tagreader/tagreader.yaml
+
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  manual_ip:
+    # Set this to the IP of the ESP
+    static_ip: 192.168.1.97
+    gateway: 192.168.1.1
+    # The subnet of the network. 255.255.255.0 works for most home networks.
+    subnet: 255.255.255.0
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Nfckizi1 Fallback Hotspot"
+    password: !secret defaultfallbackpw
+
+captive_portal:
 switch:
 - platform: template
   name: "${friendly_name} Buzzer Enabled"
@@ -71,7 +75,7 @@ switch:
 # Define buttons for writing tags via HA 
 button:
   - platform: template
-    name: Write Tag Random
+    name: "${friendly_name} Write Tag Random"
     id: write_tag_random
     # Optional variables:
     icon: "mdi:pencil-box"
@@ -108,7 +112,7 @@ button:
           id: activity_led
       - rtttl.play: "write:d=24,o=5,b=100:b,b"
   - platform: template
-    name: Clean Tag
+    name: "${friendly_name} Clean Tag"
     id: clean_tag
     icon: "mdi:nfc-variant-off"
     on_press:
@@ -128,7 +132,7 @@ button:
           id: activity_led
       - rtttl.play: "write:d=24,o=5,b=100:b,b"
   - platform: template
-    name: Cancel writing 
+    name: "${friendly_name} Cancel writing"
     id: cancel_writing
     icon: "mdi:pencil-off"
     on_press:
@@ -148,6 +152,8 @@ logger:
 
 # Enable Home Assistant API
 api:
+  encryption:
+    key: !secret encryptionkey
   services:
   - service: rfidreader_tag_ok
     then:
@@ -221,8 +227,11 @@ api:
 
 # Enable OTA upgrade
 ota:
+  password: !secret otapassword
 
 i2c:
+  sda: GPIO21
+  scl: GPIO22
   scan: False
   frequency: 400kHz
 
@@ -338,8 +347,8 @@ pn532_i2c:
         event: esphome.tag_removed
 # Define the buzzer output
 output:
-- platform: esp8266_pwm
-  pin: D7
+- platform: ledc
+  pin: GPIO12
   id: buzzer
 
 binary_sensor:
@@ -371,10 +380,10 @@ rtttl:
 light:
 - platform: neopixelbus
   variant: WS2812
-  pin: D8
+  pin: GPIO15
   num_leds: 1
   flash_transition_length: 500ms
   type: GRB
   id: activity_led
   name: "${friendly_name} LED"
-  restore_mode: ALWAYS_OFF
+  restore_mode: ALWAYS_OFF    
