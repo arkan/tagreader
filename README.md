@@ -11,18 +11,15 @@ The tag reader is a simple to build/use NFC tag reader, specially created for [H
 
 To build your own tag reader, you need the following components:
 
- - esp32 (in my casde: D1 ESP32 Mini Wroom USB-C)
+ - esp32 (in my case: D1 ESP32 Mini Wroom USB-C)
  - PN532 NFC Reader
  - WS2812 Led
  - Piezo Buzzer (KY-012)
-
-The adjusted 3D models for the case are [here](STLs).
 
 ### Connecting the components
 
 ![Photo of schematics](Schematics/tagreader_esp32_schema.png)
 ![Photo of schematics](Schematics/tagreader_esp32_solder.png)
-
 
 Also, make sure that you have set the switches on the PN532 to utilize I2C the following:
 - Switch 1: On (up)
@@ -32,6 +29,10 @@ This enables the PN532 module to communicate with the GPIO21/22 over I2C, and is
 
 ![Open Case](docs/tagreader_esp32_opencase.png)
 ![Open Case rendering](docs/tagreader_esp32_rendering.png)
+![Open Case rendering](docs/tagreader_esp32_rendering2.png)
+The adjusted 3D models for the case are [here](STLs).
+Available as Multicolor STL & 3MF. Prints on a bambu Lab in 2h 25min. (Lid, base & storagebox)
+
 ## Configuring for use with Home Assistant
 
 The tag reader requires [Home Assistant](https://www.home-assistant.io) 0.115 or later.

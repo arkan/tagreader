@@ -1,0 +1,19 @@
+alias: NFC play music tag url nfckizi1
+description: NFC play music tag with url from nfckizi1 on Kinderzimmer 1
+trigger:
+  - platform: event
+    event_type: esphome.music_tag
+    event_data: {}
+condition:
+  - condition: template
+    value_template: "{{ trigger.event.data.reader == \"nfckizi1\" }}"
+action:
+  - service: media_player.play_media
+    target:
+      entity_id: media_player.kinderzimmer_1
+    data:
+      media_content_id: "{{ trigger.event.data.url }}"
+      media_content_type: music
+    metadata: {}
+mode: queued
+max: 10
