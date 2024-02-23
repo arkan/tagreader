@@ -376,14 +376,14 @@ text_sensor:
 rtttl:
   output: buzzer
 
-# Configure LED
-light:
-- platform: neopixelbus
-  variant: WS2812
-  pin: GPIO10
-  num_leds: 1
-  flash_transition_length: 500ms
-  type: GRB
-  id: activity_led
-  name: "${friendly_name} LED"
-  restore_mode: ALWAYS_OFF    
+# # Configure LED
+# light:
+# - platform: neopixelbus
+#   variant: WS2812
+#   pin: GPIO10
+#   num_leds: 1
+#   flash_transition_length: 500ms
+#   type: GRB
+#   id: activity_led
+#   name: "${friendly_name} LED"
+#   restore_mode: ALWAYS_OFF    
