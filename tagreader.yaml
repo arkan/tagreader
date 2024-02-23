@@ -230,8 +230,8 @@ ota:
   password: !secret otapassword
 
 i2c:
-  sda: GPIO21
-  scl: GPIO22
+  sda: GPIO8
+  scl: GPIO9
   scan: False
   frequency: 400kHz
 
@@ -348,7 +348,7 @@ pn532_i2c:
 # Define the buzzer output
 output:
 - platform: ledc
-  pin: GPIO12
+  pin: GPIO10
   id: buzzer
 
 binary_sensor:
@@ -380,7 +380,7 @@ rtttl:
 light:
 - platform: neopixelbus
   variant: WS2812
-  pin: GPIO15
+  pin: GPIO10
   num_leds: 1
   flash_transition_length: 500ms
   type: GRB
