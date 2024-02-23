@@ -33,7 +33,7 @@ esphome:
     - switch.turn_on: led_enabled
 
 esp32:
-  board: esp32dev
+  board: esp32-c3-devkitm-1
   framework:
     type: arduino
 
